@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace movies_mvc.Models
 {
@@ -11,6 +12,7 @@ namespace movies_mvc.Models
         [Url(ErrorMessage = "La URL no es válida.")]
         public string Url { get; set; }
         [Url(ErrorMessage = "La URL del logo no es válida.")]
+        [DisplayName("Logo")]
         public string LogoUrl { get; set; }
         public List<Pelicula>? PeliculasPlataforma { get; set; }
     }
