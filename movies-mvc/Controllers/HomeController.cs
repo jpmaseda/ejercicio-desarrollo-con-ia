@@ -1,14 +1,24 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using movies_mvc.Data;
 using movies_mvc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace movies_mvc.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly MovieDbContext _context;
+        public HomeController(MovieDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var peliculas = await _context.Peliculas
+                .Include(p => p.Genero) // Incluye la información del género relacionado
+                .ToListAsync();
+            return View(peliculas);
         }
 
         public IActionResult Privacy()

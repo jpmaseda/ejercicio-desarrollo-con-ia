@@ -9,14 +9,19 @@
 <h4>Película</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-6">
+        <form asp-action="Edit" class="row g-3">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Titulo" class="control-label"></label>
                 <input asp-for="Titulo" class="form-control" />
                 <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sinopsis" class="control-label"></label>
+                <textarea asp-for="Sinopsis" class="form-control" /></textarea>
+                <span asp-validation-for="Sinopsis" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FechaLanzamiento" class="control-label"></label>
@@ -27,11 +32,6 @@
                 <label asp-for="MinutosDuracion" class="control-label"></label>
                 <input asp-for="MinutosDuracion" class="form-control" />
                 <span asp-validation-for="MinutosDuracion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sinopsis" class="control-label"></label>
-                <input asp-for="Sinopsis" class="form-control" />
-                <span asp-validation-for="Sinopsis" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PosterUrlPortada" class="control-label"></label>
