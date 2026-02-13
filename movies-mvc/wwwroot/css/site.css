@@ -72,11 +72,26 @@ html[data-bs-theme="dark"] .movie-card {
     right: 10px;
     background: rgba(0,0,0,0.7);
     color: #ffc107;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 7px;
     font-size: 0.8rem;
     font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 7px;
+}
+
+
+/* Form control focus with Bootstrap glow */
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.3);
+  outline: 0;
+}
+
+/* Dark mode form control focus */
+html[data-bs-theme="dark"] .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.4);
+    outline: 0;
 }
