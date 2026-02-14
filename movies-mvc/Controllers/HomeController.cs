@@ -9,16 +9,31 @@ namespace movies_mvc.Controllers
     public class HomeController : Controller
     {
         private readonly MovieDbContext _context;
+        private const int PAGE_SIZE = 8;
+
         public HomeController(MovieDbContext context)
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            if (page < 1)            
+                page = 1;
+
+            int totalPeliculas = await _context.Peliculas.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalPeliculas / PAGE_SIZE);
+
+            int skip = (page - 1) * PAGE_SIZE;
             var peliculas = await _context.Peliculas
-                .Include(p => p.Genero) // Incluye la información del género relacionado
+                .Include(p => p.Genero)
+                .OrderBy(p => p.Id)
+                .Skip(skip)
+                .Take(PAGE_SIZE)
                 .ToListAsync();
-            return View(peliculas);
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            return View(peliculas);        
         }
 
         public IActionResult Privacy()

@@ -1,6 +1,8 @@
 ﻿@model List<Pelicula>
 @{
     ViewData["Title"] = "Home Page";
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
 }
 
 <main class="container py-5">
@@ -12,14 +14,9 @@
                     <span class="input-group-text border-end-0">
                         <span class="material-symbols-outlined text-muted">search</span>
                     </span>
-                    <input class="form-control border-start-0" placeholder="Busca por película, género, plataforma..." type="text" />
-                    <button class="btn btn-danger px-4" type="button">Search</button>
+                    <input class="form-control border-start-0" placeholder="Buscá por película, género, plataforma..." type="text" />
+                    <button class="btn btn-danger px-4" type="button">Buscar</button>
                 </div>
-@*                 <div class="d-flex flex-wrap justify-content-center gap-2">
-                    <span class="badge rounded-pill border border-light text-light fw-normal py-2 px-3">Tendencias: Dune: Part Two</span>
-                    <span class="badge rounded-pill border border-light text-light fw-normal py-2 px-3">Oppenheimer</span>
-                    <span class="badge rounded-pill border border-light text-light fw-normal py-2 px-3">The Bear</span>
-                </div> *@
             </div>
         </div>
     </section>
@@ -29,15 +26,50 @@
                 <h2 class="h3 fw-bold mb-0">Catálogo</h2>
                 <div class="bg-danger" style="height: 4px; width: 40px; border-radius: 2px;"></div>
             </div>
-            <a class="btn btn-link text-danger text-decoration-none fw-bold p-0" href="#">View All</a>
         </div>
+        <nav class="mt-5" aria-label="Paginación">
+            <ul class="pagination justify-content-center">
+
+
+                <li class="page-item @(currentPage > 1 ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="1" class="page-link">«</a>
+                </li>
+                <li class="page-item @(currentPage > 1 ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="@(currentPage - 1)" class="page-link">‹</a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    @if (i == currentPage)
+                    {
+                        <li class="page-item active">
+                            <span class="page-link">@i</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a asp-action="Index" asp asp-route-page="@i" class="page-link">@i</a>
+                        </li>
+                    }
+                }
+
+                <li class="page-item @(currentPage < totalPages ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="@(currentPage + 1)" class="page-link">›</a>
+                </li>
+                <li class="page-item @(currentPage < totalPages ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="@totalPages" class="page-link">»</a>
+                </li>
+            </ul>
+        </nav>
+
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
             @foreach (var pelicula in Model)
             {
                 <div class="col">
                     <div class="card movie-card  h-100">
                         <div class="card-img-container">
-                            <img alt="@pelicula.Titulo" class="card-img-top" src="@pelicula.PosterUrlPortada" style="aspect-ratio: 2/3; object-fit: cover;" />
+                            <img alt="@pelicula.Titulo" class="card-img-top " src="@pelicula.PosterUrlPortada" style="aspect-ratio: 2/3; object-fit: cover;" />
                             <div class="rating-badge">
                                 <span class="material-symbols-outlined" style="font-size: 14px; font-variation-settings: 'FILL' 1">star</span> @pelicula.PromedioRating
                             </div>
@@ -50,6 +82,42 @@
                 </div>
             }
         </div>
+        <nav class="mt-5" aria-label="Paginación">
+            <ul class="pagination justify-content-center">
+
+
+                <li class="page-item @(currentPage > 1 ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="1" class="page-link">«</a>
+                </li>
+                <li class="page-item @(currentPage > 1 ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="@(currentPage - 1)" class="page-link">‹</a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    @if (i == currentPage)
+                    {
+                        <li class="page-item active">
+                            <span class="page-link">@i</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", "Home", new { page = i })">@i</a>
+                        </li>
+                    }
+                }
+
+                <li class="page-item @(currentPage < totalPages ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="@(currentPage + 1)" class="page-link">›</a>
+                </li>
+                <li class="page-item @(currentPage < totalPages ? "" : "disabled")">
+                    <a asp-action="Index" asp-route-page="@totalPages" class="page-link">»</a>
+                </li>
+            </ul>
+        </nav>
     </section>
 
 </main>
+
