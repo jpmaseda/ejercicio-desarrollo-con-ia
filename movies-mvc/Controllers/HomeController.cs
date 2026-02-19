@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using movies_mvc.Data;
 using movies_mvc.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace movies_mvc.Controllers
 {
@@ -15,16 +16,35 @@ namespace movies_mvc.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string txtBusqueda = "", int generoId = 0, int plataformaId = 0)
         {
             if (page < 1)            
                 page = 1;
 
-            int totalPeliculas = await _context.Peliculas.CountAsync();
+            var consulta = _context.Peliculas
+                .Include(p => p.Genero)
+                .Include(p => p.Plataforma)
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(txtBusqueda))
+            {
+                consulta = consulta.Where(p => p.Titulo.Contains(txtBusqueda));
+            }
+            
+            if (generoId > 0)
+            {
+                consulta = consulta.Where(p => p.GeneroId == generoId);
+            }
+
+            if (plataformaId > 0)
+            {
+                consulta = consulta.Where(p => p.PlataformaId == plataformaId);
+            }
+
+            int totalPeliculas = await consulta.CountAsync();
             int totalPages = (int)Math.Ceiling((double)totalPeliculas / PAGE_SIZE);
 
             int skip = (page - 1) * PAGE_SIZE;
-            var peliculas = await _context.Peliculas
+            var peliculas = await consulta
                 .Include(p => p.Genero)
                 .OrderBy(p => p.Id)
                 .Skip(skip)
@@ -33,6 +53,25 @@ namespace movies_mvc.Controllers
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
+            ViewBag.Busqueda = txtBusqueda;
+
+            var generos = await _context.Generos.OrderBy(g => g.Descripcion).ToListAsync();
+            generos.Insert(0, new Genero { Id = 0, Descripcion = "Géneros" });
+
+            ViewBag.GeneroId = new SelectList(
+                generos,
+                "Id",
+                "Descripcion",
+                generoId);
+
+            var plataformas = await _context.Plataformas.OrderBy(p => p.Nombre).ToListAsync();
+            plataformas.Insert(0, new Plataforma { Id = 0, Nombre = "Plataformas" });
+             ViewBag.PlataformaId = new SelectList(
+                plataformas,
+                "Id",
+                "Nombre",
+                 plataformaId);
+
             return View(peliculas);        
         }
 
