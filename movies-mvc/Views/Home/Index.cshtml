@@ -47,7 +47,7 @@
                         <div class="dropdown">
                             @* Los dropdowns están como buttons para mantener el estilo de boostrap. *@
                             @* Si uso select de asp es más limpio pero pierdo el estilo. *@
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @generoTexto
                             </button>
                             <ul class="dropdown-menu">
@@ -58,7 +58,7 @@
                             </ul>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @plataformaTexto
                             </button>
                             <ul class="dropdown-menu">
@@ -121,18 +121,20 @@
             @foreach (var pelicula in Model)
             {
                 <div class="col">
-                    <div class="card movie-card  h-100">
-                        <div class="card-img-container">
-                            <img alt="@pelicula.Titulo" class="card-img-top " src="@pelicula.PosterUrlPortada" style="aspect-ratio: 2/3; object-fit: cover;" />
-                            <div class="rating-badge">
-                                <span class="material-symbols-outlined" style="font-size: 14px; font-variation-settings: 'FILL' 1">star</span> @pelicula.PromedioRating
+                    <a asp-controller="Home" asp-action="Details" asp-route-id="@pelicula.Id" class="text-decoration-none">
+                        <div class="card movie-card  h-100">
+                            <div class="card-img-container">
+                                <img alt="@pelicula.Titulo" class="card-img-top " src="@pelicula.PosterUrlPortada" style="aspect-ratio: 2/3; object-fit: cover;" />
+                                <div class="rating-badge">
+                                    <span class="material-symbols-outlined" style="font-size: 14px; font-variation-settings: 'FILL' 1">star</span> @pelicula.PromedioRating
+                                </div>
+                            </div>
+                            <div class="card-body p-2">
+                                <h6 class="card-title text-truncate mb-0 fw-bold">@pelicula.Titulo</h6>
+                                <p class="card-text small text-body-secondary">@pelicula.Genero.Descripcion • @pelicula.FechaLanzamiento.Year</p>
                             </div>
                         </div>
-                        <div class="card-body p-2">
-                            <h6 class="card-title text-truncate mb-0 fw-bold">@pelicula.Titulo</h6>
-                            <p class="card-text small text-muted">@pelicula.Genero.Descripcion • @pelicula.FechaLanzamiento.Year</p>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             }
         </div>
