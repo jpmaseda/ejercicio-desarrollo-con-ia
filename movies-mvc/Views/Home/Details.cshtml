@@ -1,4 +1,7 @@
 ﻿@model Pelicula;
+@{
+    ViewData["Title"] = "Detalles";
+}
 
 <!-- Main Content -->
 <main class="container py-4">
@@ -6,13 +9,13 @@
         <!-- Left Column: Poster -->
         <div class="col-lg-4">
             <div class="position-sticky" style="top: 100px;">
-                <img alt="@Model.Titulo" class="img-fluid movie-poster mb-4 w-100" data-alt="Epic sci-fi movie poster featuring a deep space nebula" src="@Model.PosterUrlPortada" />
+                <img alt="@Model.Titulo" class="img-fluid movie-poster mb-4 w-100" src="@Model.PosterUrlPortada" />
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2">
-                        <span class="material-symbols-outlined">play_circle</span> Watch Trailer
+                    <button class="btn btn-danger btn-lg d-flex align-items-center justify-content-center gap-2">
+                        <span class="material-symbols-outlined">play_circle</span> Ver Trailer
                     </button>
-                    <button class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center gap-2">
-                        <span class="material-symbols-outlined">add</span> Add to My List
+                    <button class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
+                        <span class="material-symbols-outlined">add</span> Agregar a mi lista
                     </button>
                 </div>
             </div>
@@ -22,15 +25,14 @@
             <div class="mb-4">
                 <h1 class="display-3 fw-black mb-2">@Model.Titulo</h1>
                 <div class="d-flex align-items-center gap-3 text-body-secondary mb-4">
+                    <span class="badge rounded-pill badge-genre">@Model.Genero.Descripcion</span>
+                    <span>•</span>
                     <span class="fw-bold">@Model.FechaLanzamiento.Year</span>
                     <span>•</span>
                     <span>@(Model.MinutosDuracion/60)h @(Model.MinutosDuracion%60)m</span>
                     <span>•</span>
-                    <span class="badge bg-danger">@Model.Genero.Descripcion</span>
-                </div>
-                <div class="d-flex flex-wrap gap-2 mb-4">
                     <span class="badge rounded-pill badge-genre">@Model.Plataforma.Nombre</span>
-                </div>
+                </div>                
                 <h4 class="fw-bold mb-3">Sinopsis</h4>
                 <p class="lead text-body-secondary lh-lg mb-5">
                     @Model.Sinopsis
@@ -39,12 +41,11 @@
             <hr class="border-secondary opacity-25 mb-5" />
             <!-- Review Summary -->
             <div class="row g-4 mb-5">
-                <div class="col-md-12">
-                    <h3 class="fw-bold mb-4">Audience Reviews</h3>
+                <div class="col-md-12">                    
                     <div class="p-4 bg-custom-card review-box d-md-flex align-items-center gap-5">
                         <div class="text-center mb-4 mb-md-0">
-                            <div class="display-2 fw-black text-primary">4.8</div>
-                            <div class="star-rating text-primary mb-1">
+                            <div class="display-2 fw-black text-danger">4.8</div>
+                            <div class="star-rating text-danger mb-1">
                                 <span class="material-symbols-outlined">star</span>
                                 <span class="material-symbols-outlined">star</span>
                                 <span class="material-symbols-outlined">star</span>
@@ -56,32 +57,32 @@
                         <div class="flex-grow-1">
                             <div class="d-flex align-items-center gap-2 mb-2">
                                 <span class="small text-body-secondary" style="width: 20px;">5</span>
-                                <div class="progress flex-grow-1 bg-dark" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 85%"></div>
+                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 85%"></div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-2 mb-2">
                                 <span class="small text-body-secondary" style="width: 20px;">4</span>
-                                <div class="progress flex-grow-1 bg-dark" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 10%"></div>
+                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 10%"></div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-2 mb-2">
                                 <span class="small text-body-secondary" style="width: 20px;">3</span>
-                                <div class="progress flex-grow-1 bg-dark" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 3%"></div>
+                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 3%"></div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-2 mb-2">
                                 <span class="small text-body-secondary" style="width: 20px;">2</span>
-                                <div class="progress flex-grow-1 bg-dark" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 1%"></div>
+                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 1%"></div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-2">
                                 <span class="small text-body-secondary" style="width: 20px;">1</span>
-                                <div class="progress flex-grow-1 bg-dark" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 1%"></div>
+                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 1%"></div>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +99,7 @@
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
                                     <h6 class="mb-0 fw-bold">Alex Thompson</h6>
-                                    <div class="star-rating text-primary mt-1">
+                                    <div class="star-rating text-danger mt-1">
                                         <span class="material-symbols-outlined">star</span>
                                         <span class="material-symbols-outlined">star</span>
                                         <span class="material-symbols-outlined">star</span>
@@ -128,7 +129,7 @@
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
                                     <h6 class="mb-0 fw-bold">Sarah Jenkins</h6>
-                                    <div class="star-rating text-primary mt-1">
+                                    <div class="star-rating text-danger mt-1">
                                         <span class="material-symbols-outlined">star</span>
                                         <span class="material-symbols-outlined">star</span>
                                         <span class="material-symbols-outlined">star</span>
@@ -158,7 +159,7 @@
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
                                     <h6 class="mb-0 fw-bold">David Chen</h6>
-                                    <div class="star-rating text-primary mt-1">
+                                    <div class="star-rating text-danger mt-1">
                                         <span class="material-symbols-outlined">star</span>
                                         <span class="material-symbols-outlined">star</span>
                                         <span class="material-symbols-outlined">star</span>
