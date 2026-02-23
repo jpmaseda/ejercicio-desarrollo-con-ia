@@ -1,0 +1,60 @@
+﻿@model UsuarioViewModel
+@{
+}
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center p-3">    
+    <div class="card card-register p-4 p-md-5">
+        <div class="text-center mb-4">
+            <a class="navbar-brand d-flex align-items-center justify-content-center fs-2 mb-2">
+                <span class="material-symbols-outlined text-danger me-2 fs-1">movie</span>
+                <span>CINE<span class="text-danger">STREAM</span></span>
+            </a>
+            <h1 class="h3 fw-bold mb-1">Crear tu cuenta</h1>
+            <p class="text-secondary small">Tus películas favoritas, todo en un solo lugar.</p>
+        </div>
+        <form method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <!-- Name -->
+            <div class="form-floating mb-3">                
+                <input asp-for="Nombre" class="form-control" placeholder="Juan"/>
+                <label class="form-label" asp-for="Nombre"></label>
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <!-- Apellido -->
+            <div class="form-floating mb-3">
+                <input asp-for="Apellido" class="form-control" placeholder="Pérez" />
+                <label class="form-label" asp-for="Apellido"></label>
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <!-- Email -->
+            <div class="form-floating mb-3">
+                <input asp-for="Email" class="form-control" placeholder="nombre@ejemplo.com"/>
+                <label class="form-label" asp-for="Email">Correo Electrónico</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <!-- Password -->
+            <div class="form-floating mb-3">
+                <input asp-for="Password" class="form-control" placeholder="Ingresa tu clave" autocomplete="new-password" />
+                <label class="form-label" asp-for="Password">Contraseña</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <!-- Confirm Password -->
+            <div class="form-floating mb-4">
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Repite tu clave" autocomplete="new-password" />
+                <label asp-for="ConfirmPassword">Confirmar Contraseña</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>            
+            <!-- Submit Button -->
+            <button class="btn btn-primary-cs w-100 mb-4 rounded-3" type="submit">
+                Crear Cuenta
+            </button>
+            <!-- Login Redirect -->
+            <div class="text-center">
+                <p class="text-secondary small mb-0">
+                    ¿Ya tienes cuenta?
+                    <a class="link-cs ms-1" asp-action="Login" asp-controller="Usuario">Inicia sesión</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

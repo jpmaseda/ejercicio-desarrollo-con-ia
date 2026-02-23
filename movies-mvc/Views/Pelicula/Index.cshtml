@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Agregar película</a>
+    <a asp-action="Create" class="link-cs">Agregar película</a>
 </p>
 <!-- DataTables CSS (Bootstrap 5 Integration) -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
@@ -48,9 +48,9 @@
                     @Html.DisplayFor(modelItem => item.Plataforma.Nombre)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <a class="link-cs" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a class="link-cs" asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a class="link-cs" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                 </td>
             </tr>
         }
