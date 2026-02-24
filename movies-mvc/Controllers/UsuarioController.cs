@@ -39,7 +39,8 @@ namespace movies_mvc.Controllers
 
         public IActionResult Logout()
         {
-            return View();
+            _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult AccessDenied()
         {
@@ -51,7 +52,7 @@ namespace movies_mvc.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(UsuarioViewModel usuario)
+        public async Task<IActionResult> Registro(RegistroViewModel usuario)
         {
             if(ModelState.IsValid)
             {

@@ -18,7 +18,7 @@ namespace movies_mvc.Models
         public List<Review>? ReviewsUsuario { get; set; }
     }
     //viewmodel para el registro de usuario, con confirmación de contraseña
-    public class UsuarioViewModel
+    public class RegistroViewModel
     {
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         [StringLength(50)]
@@ -32,7 +32,7 @@ namespace movies_mvc.Models
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debes confirmar la contraseña.")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
         public string ConfirmPassword { get; set; }
