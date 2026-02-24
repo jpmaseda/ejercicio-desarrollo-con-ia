@@ -1,0 +1,43 @@
+﻿@model LoginViewModel
+@{
+}
+
+<div class="min-vh-50 d-flex align-items-center justify-content-center p-3">
+    <div class="card card-register p-4 p-md-5">
+        <div class="text-center mb-4">
+            <a class="navbar-brand d-flex align-items-center justify-content-center fs-2 mb-2">
+                <span class="material-symbols-outlined text-danger me-2 fs-1">movie</span>
+                <span>CINE<span class="text-danger">STREAM</span></span>
+            </a>
+            <h1 class="h3 fw-bold mb-1">Iniciar Sesión</h1>
+            <p class="text-secondary small">Tus películas favoritas, todo en un solo lugar.</p>
+        </div>
+        <form method="POST" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <!-- Email -->
+            <div class="form-floating mb-3">
+                <input asp-for="Email" class="form-control" placeholder="nombre@ejemplo.com" />
+                <label class="form-label" asp-for="Email">Correo Electrónico</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <!-- Password -->
+            <div class="form-floating mb-3">
+                <input asp-for="Password" class="form-control" placeholder="Ingresa tu clave" />
+                <label class="form-label" asp-for="Password">Contraseña</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <!-- Remember Me -->
+            <div class="form-floating mb-3 d-flex align-items-center justify-content-between">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="RememberMe" />
+                    <label class="form-check-label small" for="rememberMe">Recordarme</label>
+                </div>
+                <a class="link-cs">Olvidaste tu contraseña?</a>
+            </div>
+            <!-- Submit Button -->
+            <button class="btn btn-primary-cs w-100 mb-4 rounded-3" type="submit">
+                Ingresar
+            </button>
+        </form>
+    </div>
+</div>

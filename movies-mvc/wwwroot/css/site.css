@@ -83,18 +83,19 @@ html[data-bs-theme="dark"] .movie-card {
 
 
 /* Form control focus with Bootstrap glow */
-.form-control:focus{
+.form-control:focus {
     border-color: #dc3545;
     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.4);
     outline: 0;
 }
 
 /* Dark mode form control focus */
-html[data-bs-theme="dark"] .form-control:focus{
+html[data-bs-theme="dark"] .form-control:focus {
     border-color: #dc3545;
     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
     outline: 0;
 }
+
 .form-select:focus {
     border-color: #dc3545;
     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.4);
@@ -113,19 +114,23 @@ html[data-bs-theme="dark"] .form-control:focus{
 .page-link:hover {
     color: #d87680;
 }
+
 .page-link:focus {
     color: #d87680;
     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
+
 .avatar-img {
     width: 48px;
     height: 48px;
     object-fit: cover;
 }
+
 .star-rating {
     font-size: 1.2rem;
-    font-variation-settings: 'FILL' 1;    
+    font-variation-settings: 'FILL' 1;
 }
+
 .badge-genre {
     background-color: rgba(242, 13, 51, 0.15);
     color: #d87680;
@@ -133,6 +138,7 @@ html[data-bs-theme="dark"] .form-control:focus{
     padding: 0.5rem 1rem;
     font-weight: 500;
 }
+
 .review-box {
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 1rem;
@@ -147,6 +153,7 @@ html[data-bs-theme="dark"] .form-control:focus{
 .bg-custom-card {
     background-color: #c8c8c8;
 }
+
 html[data-bs-theme="dark"] .bg-custom-card {
     background-color: #1e1e1e;
 }
@@ -163,13 +170,22 @@ html[data-bs-theme="dark"] .bg-custom-card {
 
 .card-register {
     border: none;
-    box-shadow: 0 1rem 3rem rgba(0,0,0,0.175);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,0.375);
     max-width: 480px;
     width: 100%;
     border-radius: 1rem;
 }
 
-.form-floating > .form-control:focus > .form-select:focus{
+html[data-bs-theme="dark"] .card-register {
+    border: none;
+    box-shadow: 0 1rem 3rem rgba(255, 255, 255, 0.25);
+    max-width: 480px;
+    width: 100%;
+    border-radius: 1rem;
+}
+
+
+.form-floating > .form-control:focus > .form-select:focus {
     border-color: #f20d33;
     box-shadow: 0 0 0 0.25rem rgba(242, 13, 51, 0.15);
 }
@@ -201,14 +217,11 @@ html[data-bs-theme="dark"] .bg-custom-card {
         box-shadow: 0 0 0 0.25rem rgba(242, 13, 51, 0.25);
     }
 
-.a {    
-    color: #f20d33;
-    
+.form-check-input:checked {
+    background-color: #f20d33;
+    border-color: #f20d33;
 }
 
-    .ar, .a:focus {
-        background-color: #d10a2b;
-        border-color: #d10a2b;
-        color: white;
-        box-shadow: 0 0 0 0.25rem rgba(242, 13, 51, 0.25);
-    }
+.form-check-input:focus {
+    border-color: #f20d33;
+}
