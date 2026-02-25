@@ -1,0 +1,63 @@
+﻿@model PerfilViewModel
+
+@{
+}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+            <form method="post">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-5">
+                        <div class="profile-img-container mb-3">
+                            <img alt="Profile Picture" class="profile-img" data-alt="Portrait of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBal0IM6EVnUeysjpPhZPcnl1CwJ1yQZoFLRe2P5Wi6MPXoxvynrzmjJxMJ80J2oBPUt1iymkY0BHgEs8-7Mp6S3DydEhN7gq22pJhaIRDdIYiPFEH7qPtgPA2-35wsygxiA9op7BLTC1CoWzMM00KmpxGI1MlxyJfhNDJo34moTzbEFZr7pLpQJfmI1kjna83z0997BOhxc_9HEpIe2zPXzAoj1M-_UsekjLRvb2P88sOfGL5VvclrXgEWHX4SeUWnfglBAPEvkU_8" />
+                            <label class="img-overlay" for="profileUpload">
+                                <span class="material-symbols-outlined">photo_camera</span>
+                            </label>
+                            <input class="d-none" id="profileUpload" type="file" />
+                        </div>
+                        <h3 class="fw-bold mb-1">@Model.Nombre @Model.Apellido</h3>
+                        <p class="text-secondary small">@Model.Email</p>
+                    </div>
+                    <div class="row g-4">
+                        @if (ViewBag.Mensaje != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Éxito!</strong> @ViewBag.Mensaje
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium" asp-for="Nombre"></label>
+                            <input asp-for="Nombre" class="form-control form-control-lg" placeholder="Tu nombre" />
+                            <span asp-validation-for="Nombre" class="text-danger small mt-1"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Apellido" class="form-label fw-medium"></label>
+                            <input asp-for="Apellido" class="form-control form-control-lg" placeholder="Tu apellido" />
+                            <span asp-validation-for="Apellido" class="text-danger small mt-1"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FechaNacimiento" class="form-label fw-medium">Fecha de Nacimiento</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-body-tertiary">
+                                    <span class="material-symbols-outlined">calendar_today</span>
+                                </span>
+                                <input asp-for="FechaNacimiento" class="form-control form-control-lg" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-medium"></label>
+                            <input asp-for="Email" class="form-control form-control-lg" disabled />
+                        </div>
+                        <div class="col-12 mt-5">
+                            <div class="d-flex flex-wrap gap-3 justify-content-start">
+                                <button class="btn btn-danger px-4 py-2 fw-bold order-2 order-md-1" type="submit">Guardar Cambios</button>
+                                <button class="btn btn-outline-secondary px-4 py-2 fw-medium order-1 order-md-2" asp-action="Index" asp-controller="Home">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

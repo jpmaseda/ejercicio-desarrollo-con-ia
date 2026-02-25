@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace movies_mvc.Models
@@ -35,6 +36,7 @@ namespace movies_mvc.Models
         [Required(ErrorMessage = "Debes confirmar la contraseña.")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
+        [DisplayName("Confirmar Contraseña")]
         public string ConfirmPassword { get; set; }
     }
     //viewmodel para login de usuario
@@ -47,5 +49,21 @@ namespace movies_mvc.Models
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
         public string Password { get; set; }
         public bool RememberMe { get; set; }
+    }
+
+    //viewmodel para mostrar el perfil del usuario
+    public class PerfilViewModel
+    {
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [StringLength(50)]
+        public string Nombre { get; set; }
+        [Required(ErrorMessage = "El apellido es obligatorio.")]
+        [StringLength(50)]
+        public string Apellido { get; set; }
+        public string? Email { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayName("Fecha de Nacimiento")]
+        public DateTime? FechaNacimiento { get; set; }
+        public string? ImagenUrlPerfil { get; set; }
     }
 }

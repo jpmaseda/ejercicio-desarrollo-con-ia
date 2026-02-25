@@ -55,7 +55,7 @@
                         </li>
                     </ul>
                     <div class="ms-auto">
-                        <button class="btn btn-sm btn-outline-secondary" id="themeToggle" type="button" title="Cambiar tema">
+                        <button class="btn btn-outline-danger" id="themeToggle" type="button" title="Cambiar tema">
                             <i class="bi bi-moon-fill" id="themeIcon"></i>
                         </button>
                     </div>
@@ -64,18 +64,24 @@
 
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        //botonera para usuario loggeado
-                        <li class="nav-item ms-1">
-                            <a class="btn btn-sm btn-outline-secondary" asp-controller="Usuario" asp-action="Perfil">Perfil</a>
-                            <a class="btn btn-sm btn-outline-secondary" asp-controller="Usuario" asp-action="Logout">Cerrar sesión</a>
-                        </li>
+                        <div class="dropdown ms-2">
+                            <a class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                                <img alt="mdo" class="rounded-circle border border-danger" data-alt="User avatar close up" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC9-STwITTCmmiUzMgG-s_RJICB-hYUx7V3H7mAOpeLkYxPAge_jhEQbe_p-_aHXm811f7mbQjfk8NimMGuxOUzwFSdWGJ4KUgpdyyE6hczgBAe2cNgDxy1c7cs-9yqGc2sp_JbOQrOV0BuvEFLF0vLfY_SBZbXCutJxzAsoydHp6-4YJSTO1raG_m3e7yKLMOoM_MzclCm0TTpnaaiXpepqJLL8n0WvU34pUDc_Il362uzoDmDqPzSoP3BdQkk0_ibNtcwOXKbAzh" width="40" />
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a asp-action="Perfil" asp-controller="Usuario" class="dropdown-item">Mi Perfil</a></li>
+                                <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a asp-action="Logout" asp-controller="Usuario" class="dropdown-item text-danger">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>                       
                     }
                     else
                     {
                         //botonera para usuario no loggeado
                         <li class="nav-item ms-1">
-                            <a class="btn btn-outline-secondary btn-sm " asp-controller="Usuario" asp-action="Login">Iniciar sesión</a>
-                            <a class="btn btn-outline-secondary btn-sm " asp-controller="Usuario" asp-action="Registro">Registrarse</a>
+                            <a class="btn btn-outline-danger btn-sm " asp-controller="Usuario" asp-action="Login">Iniciar sesión</a>
+                            <a class="btn btn-outline-danger btn-sm " asp-controller="Usuario" asp-action="Registro">Registrarse</a>
                         </li>
                     }
                 </ul>
