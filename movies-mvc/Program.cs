@@ -4,6 +4,8 @@ using movies_mvc.Data;
 using movies_mvc.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using movies_mvc.Service;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 });
+
+//servicio para manejar el almacenamiento de imágenes, inyectado en el controlador de usuario para guardar las imágenes de perfil
+builder.Services.AddScoped<ImageStorage>();
+builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 2 * 1024 * 1024; });
 
 var app = builder.Build();
 

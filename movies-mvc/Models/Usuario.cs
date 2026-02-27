@@ -64,6 +64,7 @@ namespace movies_mvc.Models
         [DataType(DataType.Date)]
         [DisplayName("Fecha de Nacimiento")]
         public DateTime? FechaNacimiento { get; set; }
+        public IFormFile? ImagenPerfil { get; set; }
         public string? ImagenUrlPerfil { get; set; }
     }
 }

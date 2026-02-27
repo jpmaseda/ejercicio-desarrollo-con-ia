@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using movies_mvc.Models;
+using movies_mvc.Service;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace movies_mvc.Controllers
 {
@@ -9,10 +11,12 @@ namespace movies_mvc.Controllers
     {
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
-        public UsuarioController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
+        private readonly ImageStorage _imageStorage;
+        public UsuarioController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, ImageStorage imageStorage)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _imageStorage = imageStorage;
         }
         public IActionResult Login()
         {
@@ -102,8 +106,27 @@ namespace movies_mvc.Controllers
         public async Task<IActionResult> Perfil(PerfilViewModel perfilVM)
         {
             var usuarioActual = await _userManager.GetUserAsync(User);
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && perfilVM.FechaNacimiento.HasValue)
             {
+                try
+                {
+                    if (perfilVM.ImagenPerfil is not null && perfilVM.ImagenPerfil.Length > 0)
+                    {
+                        // opcional: borrar la anterior (si no es placeholder)
+                        if (!string.IsNullOrWhiteSpace(usuarioActual.ImagenUrlPerfil))
+                            await _imageStorage.DeleteAsync(usuarioActual.ImagenUrlPerfil);
+
+                        var nuevaRuta = await _imageStorage.SaveImageAsync(usuarioActual.Id, perfilVM.ImagenPerfil);
+                        usuarioActual.ImagenUrlPerfil = nuevaRuta;
+                        perfilVM.ImagenUrlPerfil = nuevaRuta;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(perfilVM);
+                }
+
                 usuarioActual.Nombre = perfilVM.Nombre;
                 usuarioActual.Apellido = perfilVM.Apellido;
                 if(perfilVM.FechaNacimiento.HasValue)
@@ -113,7 +136,7 @@ namespace movies_mvc.Controllers
 
                 if (resultado.Succeeded)
                 {
-                    ViewBag.Mensaje = "Perfil actualizado correctamente.";
+                    TempData["Mensaje"] = "Perfil actualizado correctamente.";
                     return RedirectToAction(nameof(Perfil));
                 }
                 else
@@ -121,8 +144,7 @@ namespace movies_mvc.Controllers
                     foreach (var error in resultado.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                    //ViewBag.Mensaje = "Error al actualizar el perfil.";
+                    }                    
                 }
             }
 
@@ -132,11 +154,11 @@ namespace movies_mvc.Controllers
             perfilVM.Email = usuarioActual.Email;
             perfilVM.Nombre = usuarioActual.Nombre;
             perfilVM.Apellido = usuarioActual.Apellido;
-            perfilVM.FechaNacimiento = usuarioActual.FechaNacimiento;
             perfilVM.ImagenUrlPerfil = usuarioActual.ImagenUrlPerfil;
-
-            ModelState.Clear();
-
+            //perfilVM.FechaNacimiento = usuarioActual.FechaNacimiento;
+            if (!perfilVM.FechaNacimiento.HasValue)
+                ModelState.AddModelError(string.Empty, "La fecha de nacimiento es obligatoria.");
+                        
             return View(perfilVM);
         }
     }

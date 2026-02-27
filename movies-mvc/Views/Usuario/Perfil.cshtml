@@ -4,25 +4,26 @@
 }
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <div class="card shadow-sm mb-4">
-            <form method="post">
+        <div class="card shadow-sm mb-4">            
+            <form method="post" novalidate enctype="multipart/form-data">
+                @*enctype sirve para que el formulario cargue distintos tipos de datos*@
                 <div class="card-body p-4 p-md-5">
                     <div class="text-center mb-5">
                         <div class="profile-img-container mb-3">
-                            <img alt="Profile Picture" class="profile-img" data-alt="Portrait of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBal0IM6EVnUeysjpPhZPcnl1CwJ1yQZoFLRe2P5Wi6MPXoxvynrzmjJxMJ80J2oBPUt1iymkY0BHgEs8-7Mp6S3DydEhN7gq22pJhaIRDdIYiPFEH7qPtgPA2-35wsygxiA9op7BLTC1CoWzMM00KmpxGI1MlxyJfhNDJo34moTzbEFZr7pLpQJfmI1kjna83z0997BOhxc_9HEpIe2zPXzAoj1M-_UsekjLRvb2P88sOfGL5VvclrXgEWHX4SeUWnfglBAPEvkU_8" />
-                            <label class="img-overlay" for="profileUpload">
+                            <img id="profileImage" alt="Imagen de perfil" class="profile-img" data-alt="Imagen de perfil" src="@Model.ImagenUrlPerfil" />
+                            <label class="img-overlay" asp-for="ImagenPerfil" @* onclick="document.getElementById('ImagenPerfil').click()" *@> @* NO hace falta en onclick porque la label llama al input type=file *@
                                 <span class="material-symbols-outlined">photo_camera</span>
                             </label>
-                            <input class="d-none" id="profileUpload" type="file" />
+                            <input class="d-none" asp-for="ImagenPerfil" type="file" accept="image/png,image/jpeg,image/webp" onchange="previewImage(this)" />
                         </div>
                         <h3 class="fw-bold mb-1">@Model.Nombre @Model.Apellido</h3>
                         <p class="text-secondary small">@Model.Email</p>
                     </div>
                     <div class="row g-4">
-                        @if (ViewBag.Mensaje != null)
+                        @if (TempData["Mensaje"] != null)
                         {
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Éxito!</strong> @ViewBag.Mensaje
+                                <strong>Éxito!</strong> @TempData["Mensaje"]
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         }
@@ -43,6 +44,7 @@
                                     <span class="material-symbols-outlined">calendar_today</span>
                                 </span>
                                 <input asp-for="FechaNacimiento" class="form-control form-control-lg" />
+                                <div asp-validation-summary="ModelOnly" class="text-danger small mt-1"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -61,3 +63,15 @@
         </div>
     </div>
 </div>
+
+<script>
+     function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
