@@ -80,6 +80,8 @@ namespace movies_mvc.Controllers
             var pelicula = await _context.Peliculas
                 .Include(p => p.Genero)
                 .Include(p => p.Plataforma)
+                .Include(p => p.ListaReviews)
+                    .ThenInclude(r => r.Usuario)
                 .FirstOrDefaultAsync(p => p.Id == Id);
             return View(pelicula);
         }

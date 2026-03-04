@@ -277,3 +277,34 @@ html[data-bs-theme="dark"] .card-register {
     background-color: #dc3545;
     color: #eaeaea; /* color del texto seleccionado */
 }
+
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+    .rating-stars input[type="radio"] {
+        display: none;
+    }
+
+    .rating-stars label {
+        font-size: 2rem;
+        color: #8c9195;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+        .rating-stars input[type="radio"]:checked ~ label,
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label {
+            color: #dc3545;
+        }
+
+.star-filled {
+    color: #dc3545;
+}
+
+.star-empty {
+    color: #8c9195;
+}

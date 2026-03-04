@@ -1,10 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using movies_mvc.Data;
+using movies_mvc.Models;
 
 namespace movies_mvc.Controllers
 {
     public class ReviewController : Controller
     {
+        private readonly UserManager<Usuario> _userManager;
+        private readonly MovieDbContext _context;
+        public ReviewController(UserManager<Usuario> userManager, MovieDbContext context)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
         // GET: ReviewController
         public ActionResult Index()
         {
@@ -24,17 +35,35 @@ namespace movies_mvc.Controllers
         }
 
         // POST: ReviewController/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ReviewCreateViewModel review)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                review.UsuarioId = _userManager.GetUserId(User);
+
+                if(ModelState.IsValid)
+                {
+                    var reviewEntity = new Review
+                    {
+                        PeliculaId = review.PeliculaId,
+                        UsuarioId = review.UsuarioId,
+                        Rating = review.Rating,
+                        Comentario = review.Comentario,
+                        FechaReview = DateTime.Now
+                    };
+                    _context.Reviews.Add(reviewEntity);
+                    _context.SaveChanges();
+                    return RedirectToAction("Details", "Home", new {id = review.PeliculaId});
+                }
+
+                return View(review);
             }
             catch
             {
-                return View();
+                return View(review);
             }
         }
 

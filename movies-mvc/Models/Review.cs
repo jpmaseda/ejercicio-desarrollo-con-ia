@@ -25,7 +25,19 @@ namespace movies_mvc.Models
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
-
-
+    }
+    public class ReviewCreateViewModel
+    {
+        public int? Id { get; set; }
+        
+        public int PeliculaId { get; set; }
+        public string? PeliculaTitulo { get; set; }
+        public string UsuarioId { get; set; } = string.Empty;
+        [Required(ErrorMessage = "La calificación es obligatoria.")]
+        [Range(1, 5, ErrorMessage ="La calificación debe ser entre 1 y 5 estrellas.")]
+        public int Rating { get; set; }
+        [Required(ErrorMessage ="El comentario es requerido.")]
+        [StringLength(500, ErrorMessage = "El comentario no puede exceder los 500 caracteres.")]
+        public string Comentario { get; set; } = string.Empty;
     }
 }

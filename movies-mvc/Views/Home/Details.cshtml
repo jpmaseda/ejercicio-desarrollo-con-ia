@@ -8,15 +8,15 @@
     <div class="row g-5">
         <!-- Left Column: Poster -->
         <div class="col-lg-4">
-            <div class="position-sticky" style="top: 100px;">
+            <div class="position-static" style="top: 100px;">
                 <img alt="@Model.Titulo" class="img-fluid movie-poster mb-4 w-100" src="@Model.PosterUrlPortada" />
                 <div class="d-grid gap-2">
                     <button class="btn btn-danger btn-lg d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#createReviewModal" type="button">
                         <span class="material-symbols-outlined">add_notes</span> Agregar reseña
                     </button>
-                    <button class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
+@*                     <button class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
                         <span class="material-symbols-outlined">add</span> Agregar a mi lista
-                    </button>
+                    </button> *@
                 </div>
             </div>
         </div>
@@ -91,96 +91,48 @@
             </div>
             <!-- Detailed Reviews -->
             <div class="list-group list-group-flush border-top border-secondary-subtle">
-                <!-- Review 1 -->
-                <div class="list-group-item bg-transparent border-secondary-subtle py-4 px-0">
-                    <div class="d-flex gap-3">
-                        <img alt="Reviewer" class="rounded-circle avatar-img" data-alt="Portrait of a middle-aged male movie critic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOKMKZaP3R6zA1Es1Wu3mZJn3UjB3BGmG01uN3qfASOVrWuVjsR89cEtebEHYY5ybfXuKkiSzQ2VPWm2Rw0AGG92KKUxCBAycZNEp50SrXSXNM4Z5FzZ7lnGlgCKtjrc8IG_ougMMzd2tpkBXfHknXs1Ukutahe-Hm71E1JaceeLAhT4nlMtExUoYUeJbr3fmUH36KHU-MiTJwt0_XZVhlNXZzuDPM_3GW11Orz1BzfzJU1A1DV7epimcfrA0nuqF5x3rq5Fg9JCT7" />
-                        <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Alex Thompson</h6>
-                                    <div class="star-rating text-danger mt-1">
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
+                <!-- Reviews -->
+                @foreach (var item in Model.ListaReviews)
+                {
+
+                    <div class="list-group-item bg-transparent border-secondary-subtle py-4 px-0">
+                        <div class="d-flex gap-3">
+                            <img alt="@item.Usuario.Nombre" class="rounded-circle avatar-img" 
+                                 src="@(string.IsNullOrEmpty(item.Usuario.ImagenUrlPerfil) ? "/images/default-avatar.png" : item.Usuario.ImagenUrlPerfil)"
+                                 onerror="this.src='/images/default-avatar.png'" />
+                            <div class="w-100">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">@string.Concat(item.Usuario.Nombre + " " + item.Usuario.Apellido)</h6>
+                                        <div class="star-rating text-danger mt-1">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= item.Rating)
+                                                {
+                                                    <span class="material-symbols-outlined star-filled">star</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="material-symbols-outlined star-empty">grade</span>
+                                                }
+                                            }                                            
+                                        </div>
                                     </div>
+                                    <span class="small text-body-secondary">@item.FechaReview.ToString("dd/MM/yyyy")</span>
                                 </div>
-                                <span class="small text-body-secondary">Oct 24, 2024</span>
-                            </div>
-                            <p class="text-body-secondary">A visual masterpiece that redefines the sci-fi genre. The emotional weight of the father-daughter relationship ground the massive cosmic scope. Absolutely stunning cinematography and soundtrack.</p>
-                            <div class="d-flex gap-3">
-                                <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                    <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (124)
-                                </button>
-                                <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                    <span class="material-symbols-outlined fs-6">reply</span> Reply
-                                </button>
+                                <p class="text-body-secondary">@item.Comentario</p>
+                                <div class="d-flex gap-3">
+                                    <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
+                                        <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (124)
+                                    </button>
+                                    <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
+                                        <span class="material-symbols-outlined fs-6">reply</span> Reply
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Review 2 -->
-                <div class="list-group-item bg-transparent border-secondary-subtle py-4 px-0">
-                    <div class="d-flex gap-3">
-                        <img alt="Reviewer" class="rounded-circle avatar-img" data-alt="Portrait of a young female movie enthusiast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGQ-Md3bguDjaR9iA4i_V8XC2UGREsgDt_P6RuXxVV2RCr6FRV6F5JquDwUnK2D7SJOm5NMAOaFXLXFJ-D9EoL3E--mUWe2W_lSgQOkrt9REFUdFkbx408RMouB_NsffKWTIf3jKHGtEk5P_zZ477qFk_2beOexeOUxpa5LBtCj59NlC0Dkh_eE28NLqB3GwWlAV3BX_SwIS1keHk_XbqTZQTah3rzq0583XGfVsBnTm1Pf23Cw--LO34FYn8M7BOj4bXWRcA88rDS" />
-                        <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Sarah Jenkins</h6>
-                                    <div class="star-rating text-danger mt-1">
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star_outline</span>
-                                    </div>
-                                </div>
-                                <span class="small text-body-secondary">Oct 22, 2024</span>
-                            </div>
-                            <p class="text-body-secondary">The physics might be complex, but the heart is simple. I cried three times. The docking sequence is one of the most intense things I've ever watched. Hans Zimmer's score is out of this world.</p>
-                            <div class="d-flex gap-3">
-                                <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                    <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (89)
-                                </button>
-                                <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                    <span class="material-symbols-outlined fs-6">reply</span> Reply
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Review 3 -->
-                <div class="list-group-item bg-transparent border-0 py-4 px-0">
-                    <div class="d-flex gap-3">
-                        <img alt="Reviewer" class="rounded-circle avatar-img" data-alt="Close up portrait of a male user with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmYwOjQ8vTyVADk14EStJ4dAiGY2lQ1gdZbBJFK-8BqbXE7ud7lHTOabTMlf79lCCG-R5nAJ488wBDXfxyEj62fcsEls2py9FSWpKtGTadppOXo7wa882iYkC1uBch8Rbb5iGeeIAmd70aZAOOwJMFw1P6tVMONVA6huwS6nZntd6pkqWy1Dn6425dwQ9tbbo8oHXrbv-wnouoa8Kp0C_UU89rJ9bNlbZmrgHEuH4EOXf7lZ12KYVEp9J4VJifvifCFOiniUQXcZwT" />
-                        <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="mb-0 fw-bold">David Chen</h6>
-                                    <div class="star-rating text-danger mt-1">
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined">star</span>
-                                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">star_outline</span>
-                                        <span class="material-symbols-outlined">star_half</span>
-                                    </div>
-                                </div>
-                                <span class="small text-body-secondary">Oct 19, 2024</span>
-                            </div>
-                            <p class="text-body-secondary">Deeply philosophical and ambitious. Some parts felt a bit rushed towards the end, but the overall experience is unparalleled. Definitely watch this on the biggest screen possible.</p>
-                            <div class="d-flex gap-3">
-                                <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                    <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (42)
-                                </button>
-                                <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                    <span class="material-symbols-outlined fs-6">reply</span> Reply
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }         
             </div>
             <div class="d-grid mt-4">
                 <button class="btn btn-outline-secondary py-3 fw-bold">Load More Reviews</button>
@@ -189,4 +141,12 @@
     </div>
 </main>
 
-<partial name="~/Views/Review/_CreateReview.cshtml" />
+@{
+    var reviewModel = new ReviewCreateViewModel
+    {
+        PeliculaId = Model.Id,
+        PeliculaTitulo = Model.Titulo
+    };
+}
+
+<partial name="~/Views/Review/_CreateReview.cshtml" model="reviewModel" />
