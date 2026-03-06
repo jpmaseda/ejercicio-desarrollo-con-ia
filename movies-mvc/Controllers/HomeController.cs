@@ -4,6 +4,7 @@ using movies_mvc.Data;
 using movies_mvc.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace movies_mvc.Controllers
 {
@@ -83,6 +84,15 @@ namespace movies_mvc.Controllers
                 .Include(p => p.ListaReviews)
                     .ThenInclude(r => r.Usuario)
                 .FirstOrDefaultAsync(p => p.Id == Id);
+
+            ViewBag.UserReview =false;
+            if (User?.Identity?.IsAuthenticated == true && pelicula.ListaReviews != null)
+            {
+                //alternativa a usar el UserManager
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                ViewBag.UserReview = !(pelicula.ListaReviews.FirstOrDefault(r => r.UsuarioId == userId) == null);
+            }
+
             return View(pelicula);
         }
         public IActionResult Privacy()

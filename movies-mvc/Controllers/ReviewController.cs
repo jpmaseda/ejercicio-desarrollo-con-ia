@@ -44,6 +44,15 @@ namespace movies_mvc.Controllers
             {
                 review.UsuarioId = _userManager.GetUserId(User);
 
+                //validación de review única por usuario
+                var reviewExiste = _context.Reviews
+                    .FirstOrDefault(r => r.PeliculaId == review.PeliculaId && r.UsuarioId == review.UsuarioId);
+                if (reviewExiste != null)
+                {
+                    TempData["ReviewExiste"] = "Ya realizaste una reseña para esta película.";
+                    return RedirectToAction("Details", "Home", new { id = review.PeliculaId });
+                }
+
                 if(ModelState.IsValid)
                 {
                     var reviewEntity = new Review

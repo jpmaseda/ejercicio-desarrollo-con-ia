@@ -11,7 +11,7 @@
             <div class="position-static" style="top: 100px;">
                 <img alt="@Model.Titulo" class="img-fluid movie-poster mb-4 w-100" src="@Model.PosterUrlPortada" />
                 <div class="d-grid gap-2">
-                    <button class="btn btn-danger btn-lg d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#createReviewModal" type="button">
+                    <button @(ViewBag.UserReview ? "disabled" : "") class="btn btn-danger btn-lg d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#createReviewModal" type="button">
                         <span class="material-symbols-outlined">add_notes</span> Agregar reseña
                     </button>
 @*                     <button class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
@@ -89,6 +89,14 @@
                     </div>
                 </div>
             </div>
+            <!-- Cartel de review ya existe -->
+            @if (TempData["ReviewExiste"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>@TempData["ReviewExiste"]</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
             <!-- Detailed Reviews -->
             <div class="list-group list-group-flush border-top border-secondary-subtle">
                 <!-- Reviews -->
