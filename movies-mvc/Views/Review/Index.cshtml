@@ -1,0 +1,50 @@
+﻿@model List<Review>
+
+@{
+}
+
+<div class="list-group list-group-flush border-top border-secondary-subtle">
+    <!-- Reviews -->
+    @foreach (var item in Model)
+    {
+
+        <div class="list-group-item bg-transparent border-secondary-subtle py-4 px-0">
+            <div class="d-flex gap-3">
+                <img alt="@item.Pelicula.Titulo" class="rounded-circle avatar-img"
+                     src="@(string.IsNullOrEmpty(item.Pelicula.PosterUrlPortada) ? "/images/default-avatar.png" : item.Pelicula.PosterUrlPortada)"
+                     onerror="this.src='/images/default-avatar.png'" />
+                <div class="w-100">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h6 class="mb-0 fw-bold">@item.Pelicula.Titulo</h6>
+                            <div class="star-rating text-danger mt-1">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= item.Rating)
+                                    {
+                                        <span class="material-symbols-outlined star-filled">star</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="material-symbols-outlined star-empty">grade</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <span class="small text-body-secondary">@item.FechaReview.ToString("dd/MM/yyyy")</span>
+                    </div>
+                    <p class="text-body-secondary">@item.Comentario</p>
+                    <div class="d-flex gap-3">
+                        <a class="link-cs" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+                        @* <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
+                            <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (124)
+                        </button>
+                        <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
+                            <span class="material-symbols-outlined fs-6">reply</span> Reply
+                        </button> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

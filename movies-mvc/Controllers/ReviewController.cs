@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using movies_mvc.Data;
 using movies_mvc.Models;
 
@@ -16,10 +17,19 @@ namespace movies_mvc.Controllers
             _context = context;
             _userManager = userManager;
         }
+
+        [Authorize]
+
         // GET: ReviewController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var userId = _userManager.GetUserId(User);
+            var reviews = await _context.Reviews
+                .Include(r => r.Pelicula)
+                .Where(r => r.UsuarioId == userId)
+                .ToListAsync();
+
+            return View(reviews);
         }
 
         // GET: ReviewController/Details/5
