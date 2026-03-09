@@ -1,5 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@* @inject UserManager<Usuario> UserManager
+ *@
 @inject SignInManager<Usuario> SignInManager
+@{
+    var userLogged = SignInManager.IsSignedIn(User);
+    var esAdmin = User.IsInRole("Admin");
+    // var esAdmin = UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin").Result;
+}
 
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -42,21 +49,30 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Plataforma" asp-action="Index">Plataforma</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Genero" asp-action="Index">Género</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Pelicula" asp-action="Index">Películas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Review" asp-action="Index">Mis Reviews</a>
-                        </li>
+                        @if (userLogged)
+                        {
+                            if (esAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Review" asp-action="Index">Reviews</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Plataforma" asp-action="Index">Plataforma</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Genero" asp-action="Index">Género</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Pelicula" asp-action="Index">Películas</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Review" asp-action="Index">Mis Reviews</a>
+                                </li>
+                            }
+                        }
                     </ul>
                     <div class="ms-auto">
                         <button class="btn btn-outline-danger" id="themeToggle" type="button" title="Cambiar tema">
@@ -66,7 +82,7 @@
                 </div>
                 <ul class="navbar-nav flex-grow">
 
-                    @if (SignInManager.IsSignedIn(User))
+                    @if (userLogged)
                     {
                         <div class="dropdown ms-2">
                             <a class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" href="#">
@@ -78,7 +94,7 @@
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a asp-action="Logout" asp-controller="Usuario" class="dropdown-item text-danger">Cerrar Sesión</a></li>
                             </ul>
-                        </div>                       
+                        </div>
                     }
                     else
                     {
@@ -101,7 +117,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - CINE STREAM - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-danger link-cs">Privacy</a>
+            &copy; 2026 - CINE STREAM
         </div>
     </footer>
 

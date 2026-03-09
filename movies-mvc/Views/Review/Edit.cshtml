@@ -1,9 +1,12 @@
 ﻿@model ReviewCreateViewModel
 @{
 }
+@{
+    ViewData["Title"] = "Editar reseña";
+}
+<h1>@ViewData["Title"]</h1>
 
-
-<h1 class=" fs-5">Editar reseña de "@Model.PeliculaTitulo"</h1>
+<h2 class=" fs-5">"@Model.PeliculaTitulo"</h2>
 <form asp-controller="Review" asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="PeliculaId" />

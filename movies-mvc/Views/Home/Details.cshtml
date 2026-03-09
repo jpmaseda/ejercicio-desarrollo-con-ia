@@ -1,5 +1,11 @@
-﻿@model Pelicula;
+﻿@using Microsoft.AspNetCore.Identity
+@model Pelicula;
+@inject SignInManager<Usuario> SignInManager
+
 @{
+    var userLogged = SignInManager.IsSignedIn(User);
+    var esAdmin = User.IsInRole("Admin");
+
     ViewData["Title"] = "Detalles";
 }
 
@@ -11,7 +17,7 @@
             <div class="position-static" style="top: 100px;">
                 <img alt="@Model.Titulo" class="img-fluid movie-poster mb-4 w-100" src="@Model.PosterUrlPortada" />
                 <div class="d-grid gap-2">
-                    <button @(ViewBag.UserReview ? "disabled" : "") class="btn btn-danger btn-lg d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#createReviewModal" type="button">
+                    <button @(ViewBag.UserReview || !userLogged ? "disabled" : "") class="btn btn-danger btn-lg d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#createReviewModal" type="button">
                         <span class="material-symbols-outlined">add_notes</span> Agregar reseña
                     </button>
 @*                     <button class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
@@ -129,14 +135,10 @@
                                     <span class="small text-body-secondary">@item.FechaReview.ToString("dd/MM/yyyy")</span>
                                 </div>
                                 <p class="text-body-secondary">@item.Comentario</p>
-                                @* <div class="d-flex gap-3">
-                                    <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                        <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (124)
-                                    </button>
-                                    <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                                        <span class="material-symbols-outlined fs-6">reply</span> Reply
-                                    </button>
-                                </div> *@
+                                @if(userLogged && esAdmin)
+                                {
+                                    <a asp-action="Edit" asp-controller="Review" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a>
+                                }
                             </div>
                         </div>
                     </div>

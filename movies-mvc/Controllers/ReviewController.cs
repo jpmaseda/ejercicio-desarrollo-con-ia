@@ -8,6 +8,7 @@ using movies_mvc.Models;
 
 namespace movies_mvc.Controllers
 {
+    [Authorize]
     public class ReviewController : Controller
     {
         private readonly UserManager<Usuario> _userManager;
@@ -18,34 +19,33 @@ namespace movies_mvc.Controllers
             _userManager = userManager;
         }
 
-        [Authorize]
+
+        //Mis reseñas
 
         // GET: ReviewController
         public async Task<ActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
-            var reviews = await _context.Reviews
-                .Include(r => r.Pelicula)
-                .Where(r => r.UsuarioId == userId)
-                .ToListAsync();
+            var reviews = new List<Review>();
+            if (User.IsInRole("Admin"))
+            {
+                reviews = await _context.Reviews
+                    .Include(r => r.Pelicula)
+                    .ToListAsync();
+            }
+            else
+            {
+                reviews = await _context.Reviews
+                    .Include(r => r.Pelicula)
+                    .Where(r => r.UsuarioId == userId)
+                    .ToListAsync();
+            }
 
             return View(reviews);
         }
-
-        // GET: ReviewController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ReviewController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+             
 
         // POST: ReviewController/Create
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ReviewCreateViewModel review)
@@ -85,18 +85,22 @@ namespace movies_mvc.Controllers
                 return View(review);
             }
         }
-        [Authorize]
-        // GET: ReviewController/Edit/5
-        public ActionResult Edit(int Id)
-        {
-            var userId = _userManager.GetUserId(User);
-            var review = _context.Reviews
-                .Include(r => r.Pelicula)
-                .FirstOrDefault(r => r.Id == Id && r.UsuarioId == userId);
 
-            if (review == null)            
+        // GET: ReviewController/Edit/5
+        public async Task<ActionResult> Edit(int Id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var review = await _context.Reviews
+                .Include(r => r.Pelicula)
+                .FirstOrDefaultAsync(r => r.Id == Id);
+
+            if (review == null)
                 return NotFound();
+
+            if (user.Id != review.UsuarioId && !_userManager.IsInRoleAsync(user, "Admin").Result)
+                return Forbid();
             
+
             var reviewViewModel = new ReviewCreateViewModel
             {
                 Id = review.Id,
@@ -113,22 +117,25 @@ namespace movies_mvc.Controllers
         // POST: ReviewController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ReviewCreateViewModel review)
+        public async Task<ActionResult> Edit(ReviewCreateViewModel review)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var reviewEntity = _context.Reviews.Find(review.Id);
+                    var reviewEntity = await _context.Reviews.FindAsync(review.Id);
+
                     if (reviewEntity == null)
                         return NotFound();
-                    var userId = _userManager.GetUserId(User);
-                    if (reviewEntity.UsuarioId != userId)
+
+                    var user = await _userManager.GetUserAsync(User);
+                    if (reviewEntity.UsuarioId != user.Id && !_userManager.IsInRoleAsync(user, "Admin").Result)
                         return Forbid();
+                    
                     reviewEntity.Rating = review.Rating;
                     reviewEntity.Comentario = review.Comentario;
                     _context.Reviews.Update(reviewEntity);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return RedirectToAction("Index", "Review");
                 }
                 return View(review);
@@ -139,25 +146,5 @@ namespace movies_mvc.Controllers
             }
         }
 
-        // GET: ReviewController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ReviewController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
