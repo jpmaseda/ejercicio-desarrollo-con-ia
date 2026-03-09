@@ -63,7 +63,7 @@ namespace movies_mvc.Controllers
                     return RedirectToAction("Details", "Home", new { id = review.PeliculaId });
                 }
 
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var reviewEntity = new Review
                     {
@@ -75,7 +75,7 @@ namespace movies_mvc.Controllers
                     };
                     _context.Reviews.Add(reviewEntity);
                     _context.SaveChanges();
-                    return RedirectToAction("Details", "Home", new {id = review.PeliculaId});
+                    return RedirectToAction("Details", "Home", new { id = review.PeliculaId });
                 }
 
                 return View(review);
@@ -85,25 +85,57 @@ namespace movies_mvc.Controllers
                 return View(review);
             }
         }
-
+        [Authorize]
         // GET: ReviewController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int Id)
         {
-            return View();
+            var userId = _userManager.GetUserId(User);
+            var review = _context.Reviews
+                .Include(r => r.Pelicula)
+                .FirstOrDefault(r => r.Id == Id && r.UsuarioId == userId);
+
+            if (review == null)            
+                return NotFound();
+            
+            var reviewViewModel = new ReviewCreateViewModel
+            {
+                Id = review.Id,
+                PeliculaId = review.PeliculaId,
+                PeliculaTitulo = review.Pelicula?.Titulo,
+                UsuarioId = review.UsuarioId,
+                Rating = review.Rating,
+                Comentario = review.Comentario
+            };
+
+            return View(reviewViewModel);
         }
 
         // POST: ReviewController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(ReviewCreateViewModel review)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    var reviewEntity = _context.Reviews.Find(review.Id);
+                    if (reviewEntity == null)
+                        return NotFound();
+                    var userId = _userManager.GetUserId(User);
+                    if (reviewEntity.UsuarioId != userId)
+                        return Forbid();
+                    reviewEntity.Rating = review.Rating;
+                    reviewEntity.Comentario = review.Comentario;
+                    _context.Reviews.Update(reviewEntity);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index", "Review");
+                }
+                return View(review);
             }
             catch
             {
-                return View();
+                return View(review);
             }
         }
 

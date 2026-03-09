@@ -10,7 +10,7 @@
 
         <div class="list-group-item bg-transparent border-secondary-subtle py-4 px-0">
             <div class="d-flex gap-3">
-                <img alt="@item.Pelicula.Titulo" class="rounded-circle avatar-img"
+                <img alt="@item.Pelicula.Titulo"  style="width: 120px; height: auto"
                      src="@(string.IsNullOrEmpty(item.Pelicula.PosterUrlPortada) ? "/images/default-avatar.png" : item.Pelicula.PosterUrlPortada)"
                      onerror="this.src='/images/default-avatar.png'" />
                 <div class="w-100">
@@ -35,7 +35,7 @@
                     </div>
                     <p class="text-body-secondary">@item.Comentario</p>
                     <div class="d-flex gap-3">
-                        <a class="link-cs" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+                        <a class="btn btn-outline-danger" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
                         @* <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
                             <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (124)
                         </button>
