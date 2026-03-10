@@ -12,11 +12,13 @@ namespace movies_mvc.Controllers
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly ImageStorage _imageStorage;
-        public UsuarioController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, ImageStorage imageStorage)
+        private readonly IEmailService _emailService;
+        public UsuarioController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, ImageStorage imageStorage, IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _imageStorage = imageStorage;
+            _emailService = emailService;
         }
         public IActionResult Login()
         {
@@ -73,6 +75,7 @@ namespace movies_mvc.Controllers
                 if (resultado.Succeeded)
                 {
                     await _signInManager.SignInAsync(nuevoUsuario, isPersistent: false);
+                    await _emailService.SendAsync(nuevoUsuario.Email, "Bienvenido a Movies MVC", $"Hola {nuevoUsuario.Nombre}, gracias por registrarte en Movies MVC.");
                     return RedirectToAction("Index", "Home");
                 }
                 else
