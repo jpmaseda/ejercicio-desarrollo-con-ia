@@ -10,13 +10,19 @@
 
         <div class="list-group-item bg-transparent border-secondary-subtle py-4 px-0">
             <div class="d-flex gap-3">
-                <img alt="@item.Pelicula.Titulo"  style="width: 120px; height: auto"
+                <img alt="@item.Pelicula.Titulo" style="width: 120px; height: auto"
                      src="@(string.IsNullOrEmpty(item.Pelicula.PosterUrlPortada) ? "/images/default-avatar.png" : item.Pelicula.PosterUrlPortada)"
                      onerror="this.src='/images/default-avatar.png'" />
                 <div class="w-100">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div>
-                            <h6 class="mb-0 fw-bold">@item.Pelicula.Titulo</h6>
+                            <h6 class="mb-2 fw-bold">@item.Pelicula.Titulo</h6>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="d-flex gap-3">
+                                    <span class="badge rounded-pill badge-genre">Usuario: @item.Usuario.Email</span>
+                                </div>
+                            }
                             <div class="star-rating text-danger mt-1">
                                 @for (int i = 1; i <= 5; i++)
                                 {
@@ -36,12 +42,6 @@
                     <p class="text-body-secondary">@item.Comentario</p>
                     <div class="d-flex gap-3">
                         <a class="btn btn-outline-danger" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                        @* <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                            <span class="material-symbols-outlined fs-6">thumb_up</span> Helpful (124)
-                        </button>
-                        <button class="btn btn-sm btn-link text-body-secondary text-decoration-none p-0 d-flex align-items-center gap-1">
-                            <span class="material-symbols-outlined fs-6">reply</span> Reply
-                        </button> *@
                     </div>
                 </div>
             </div>

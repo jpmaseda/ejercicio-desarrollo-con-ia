@@ -31,6 +31,7 @@ namespace movies_mvc.Controllers
             {
                 reviews = await _context.Reviews
                     .Include(r => r.Pelicula)
+                    .Include(r => r.Usuario)
                     .ToListAsync();
             }
             else
