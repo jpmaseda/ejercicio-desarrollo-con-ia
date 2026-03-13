@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>movies_mvc</RootNamespace>
+    <UserSecretsId>53f63018-77d4-4903-ba2b-c2e03ea0b78e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
