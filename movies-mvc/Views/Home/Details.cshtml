@@ -3,6 +3,13 @@
 @inject SignInManager<Usuario> SignInManager
 
 @{
+    // Cálculo de estadísticas de reseñas
+    var totalReviews = Model.ListaReviews?.Count ?? 0;
+    var ratings = Model.ListaReviews?
+        .GroupBy(r => r.Rating)
+        .ToDictionary(g => g.Key, g => g.Count())
+        ?? new Dictionary<int, int>();
+
     var userLogged = SignInManager.IsSignedIn(User);
     var esAdmin = User.IsInRole("Admin");
 
@@ -52,46 +59,42 @@
                         <div class="text-center mb-4 mb-md-0">
                             <div class="display-2 fw-black text-danger">@Model.PromedioRating.ToString("0.0") </div>
                             <div class="star-rating text-danger mb-1">
-                                <span class="material-symbols-outlined">star</span>
-                                <span class="material-symbols-outlined">star</span>
-                                <span class="material-symbols-outlined">star</span>
-                                <span class="material-symbols-outlined">star</span>
-                                <span class="material-symbols-outlined">star_half</span>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= @Model.PromedioRating)
+                                    {
+                                        <span class="material-symbols-outlined star-filled">star</span>
+                                    }
+                                    else if (i > @Model.PromedioRating && i < @Model.PromedioRating + 1)
+                                    {
+                                        <span class="material-symbols-outlined star-half">star</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="material-symbols-outlined star-empty">grade</span>
+                                    }
+                                }
                             </div>
                             <div class="small text-body-secondary">Basado en @(Model.ListaReviews != null ? Model.ListaReviews.Count() : 0) reseñas</div>
                         </div>
-                        <div class="flex-grow-1">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="small text-body-secondary" style="width: 20px;">5</span>
-                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 85%"></div>
+                        <!-- Distribución de ratings  -->
+                         <div class="flex-grow-1">
+                            @for (int i = 5; i >= 1; i--)
+                            {
+                                var count = ratings.ContainsKey(i) ? ratings[i] : 0;
+                                var percent = totalReviews > 0 ? (double)count / totalReviews * 100 : 0;
+
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span style="width:20px">@i</span>
+
+                                    <div class="progress flex-grow-1 bg-body-secondary" style="height:8px;">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width:@percent%"></div>
+                                    </div>
+
+                                    <span style="width:35px">@count</span>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="small text-body-secondary" style="width: 20px;">4</span>
-                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 10%"></div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="small text-body-secondary" style="width: 20px;">3</span>
-                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 3%"></div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="small text-body-secondary" style="width: 20px;">2</span>
-                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 1%"></div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="small text-body-secondary" style="width: 20px;">1</span>
-                                <div class="progress flex-grow-1 bg-body-secondary" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 1%"></div>
-                                </div>
-                            </div>
-                        </div>
+                            }
+                        </div>                             
                     </div>
                 </div>
             </div>

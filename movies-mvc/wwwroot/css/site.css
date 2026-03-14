@@ -305,6 +305,12 @@ html[data-bs-theme="dark"] .card-register {
     color: #dc3545;
 }
 
+.star-half {
+    background: linear-gradient(90deg, #dc3545 50%, #8c9195 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .star-empty {
     color: #8c9195;
 }
