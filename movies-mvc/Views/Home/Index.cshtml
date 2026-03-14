@@ -1,5 +1,6 @@
 ﻿@model List<Pelicula>
 @{
+    
     ViewData["Title"] = "Catálogo";
     int currentPage = ViewBag.CurrentPage;
     int totalPages = ViewBag.TotalPages;
@@ -79,8 +80,10 @@
                 <h2 class="h3 fw-bold mb-0">Catálogo</h2>
                 <div class="bg-danger" style="height: 4px; width: 40px; border-radius: 2px;"></div>
             </div>
+@* Botón para ver todas la películas *@
             <a class="btn btn-link text-danger text-decoration-none fw-bold p-0" href="@($"?generoId=0&plataformaId=0&txtBusqueda=")">Ver todas</a>
         </div>
+@* Paginación *@
         <nav class="mt-5" aria-label="Paginación">
             <ul class="pagination justify-content-center">
 
@@ -117,6 +120,8 @@
             </ul>
         </nav>
 
+@* Listado de películas *@
+
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
             @foreach (var pelicula in Model)
             {
@@ -126,7 +131,7 @@
                             <div class="card-img-container">
                                 <img alt="@pelicula.Titulo" class="card-img-top " src="@pelicula.PosterUrlPortada" style="aspect-ratio: 2/3; object-fit: cover;" />
                                 <div class="rating-badge">
-                                    <span class="material-symbols-outlined" style="font-size: 14px; font-variation-settings: 'FILL' 1">star</span> @pelicula.PromedioRating
+                                    <span class="material-symbols-outlined" style="font-size: 14px; font-variation-settings: 'FILL' 1">star</span> @pelicula.PromedioRating.ToString("0.0")
                                 </div>
                             </div>
                             <div class="card-body p-2">

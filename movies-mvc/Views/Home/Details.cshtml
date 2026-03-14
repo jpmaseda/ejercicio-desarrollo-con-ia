@@ -50,7 +50,7 @@
                 <div class="col-md-12">                    
                     <div class="p-4 bg-custom-card review-box d-md-flex align-items-center gap-5">
                         <div class="text-center mb-4 mb-md-0">
-                            <div class="display-2 fw-black text-danger">4.8</div>
+                            <div class="display-2 fw-black text-danger">@Model.PromedioRating.ToString("0.0") </div>
                             <div class="star-rating text-danger mb-1">
                                 <span class="material-symbols-outlined">star</span>
                                 <span class="material-symbols-outlined">star</span>
@@ -58,7 +58,7 @@
                                 <span class="material-symbols-outlined">star</span>
                                 <span class="material-symbols-outlined">star_half</span>
                             </div>
-                            <div class="small text-body-secondary">Based on 12.4k reviews</div>
+                            <div class="small text-body-secondary">Basado en @(Model.ListaReviews != null ? Model.ListaReviews.Count() : 0) reseñas</div>
                         </div>
                         <div class="flex-grow-1">
                             <div class="d-flex align-items-center gap-2 mb-2">

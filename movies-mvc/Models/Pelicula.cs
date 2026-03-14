@@ -34,7 +34,7 @@ namespace movies_mvc.Models
         public Plataforma? Plataforma { get; set; }
         [NotMapped]
         [DisplayName("Rating")]
-        public int PromedioRating { get; set; }
+        public double PromedioRating { get; set; }
         public List<Review>? ListaReviews { get; set; }
         public List<Favorito>? UsuariosFavorito { get; set; }
     }
