@@ -53,6 +53,8 @@ builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 2 * 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 
+builder.Services.AddScoped<LlmService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

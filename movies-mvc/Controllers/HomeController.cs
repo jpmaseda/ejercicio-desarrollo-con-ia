@@ -5,17 +5,20 @@ using movies_mvc.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using movies_mvc.Service;
 
 namespace movies_mvc.Controllers
 {
     public class HomeController : Controller
     {
         private readonly MovieDbContext _context;
+        private readonly LlmService _llmService;
         private const int PAGE_SIZE = 8;
 
-        public HomeController(MovieDbContext context)
+        public HomeController(MovieDbContext context, LlmService llmService)
         {
             _context = context;
+            _llmService = llmService;
         }
         public async Task<IActionResult> Index(int page = 1, string txtBusqueda = "", int generoId = 0, int plataformaId = 0)
         {
@@ -142,5 +145,49 @@ namespace movies_mvc.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpGet]
+        public async Task<IActionResult> Spoiler(string titulo)
+        {
+            try
+            {
+                var spoiler = await _llmService.ObtenerSpoilerAsync(titulo);
+                return Json(new { success = true, data = spoiler });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Resumen(string titulo)
+        {
+            try
+            {
+                var resumen = await _llmService.ObtenerResumenAsync(titulo);
+                return Json(new { success = true, data = resumen });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> NuevoPoster(string titulo)
+        {
+            try
+            {
+
+                var imagenBase64 = await _llmService.ConsultaImagenAsync(titulo);
+
+                return Json(new { success = true, data = imagenBase64 });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
+
 }
